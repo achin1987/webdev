@@ -1,0 +1,37 @@
+body{
+	border: 20px solid #a1aaaf;
+	font-family: 'Source Sans Pro', sans-serif;
+  	padding: 20px;
+  	margin: 20px auto;
+  	max-width: 700px;
+  	width: 80%;
+}
+
+div{
+	margin-left: 10px;
+	margin-right: 10px;
+	text-align: justify;
+}
+
+h2{
+	color: #2c3e50;
+	font-size: 2.0rem;
+	font-weight: bold;
+	text-transform: capitalize;
+}
+
+.date{
+	color: #5bc5ff;
+	letter-spacing: 0.2em;
+	font-size: 1em;
+	font-weight: 400;
+}
+
+.pfirst{
+	border-left:5px solid #a1aaaf;
+	padding-left: 5px;
+}
+
+hr{
+	border: .5px solid #d5dee2;
+}
