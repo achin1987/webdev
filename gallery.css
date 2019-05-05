@@ -3,7 +3,22 @@ body{
 
 }
 
+.jumbotron{
+	color: #2c3e50;
+	background: #ecf0f1;
+}
 
+.navbar-inverse{
+	background: #2c3e50;
+}
+
+.navbar-inverse .navbar-nav>li>a {
+    color: white;
+}
+
+.navbar-inverse .navbar-brand {
+    color: white;
+}
 .image1{
 	background-image: url('david-calderon-1552454-unsplash.jpg');
 }
@@ -46,14 +61,3 @@ body{
 	background-size: cover;
 	background-position: center;
 }
-
-/*.flex {
-     display: flex;
-     flex-wrap: wrap;
-}
-
-
-.thumbnail img{
-   height:250px;
-   /* width:100%   if you want the same width but this will also stretch out the image
-}*/
