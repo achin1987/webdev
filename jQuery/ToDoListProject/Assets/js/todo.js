@@ -1,10 +1,11 @@
 //check off the spcific todo by Clicking
-$("li").click(function() {
+//run the function when an li is clicked in the parent ul
+$("ul").on("click", "li", function() {
     $(this).toggleClass("completed");
 });
 
 //click on X to delete todo
-$("span").click(function(event) {
+$("ul").on("click", "span", function(event) {
     $(this).parent().fadeOut(500, function() {
         $(this).remove();
     });
