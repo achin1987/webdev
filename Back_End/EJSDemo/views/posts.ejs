@@ -1,0 +1,13 @@
+<% include partials/header %>
+
+<h1>The Posts Page</h1>
+
+<% for (var i = 0; i<post.length; i++){ %>
+<li><%= post[i].title %> - <strong><%= post[i].author.toUpperCase() %></strong></li>
+<%	} %>
+
+<% post.forEach(function(post){ %>
+	<li><%= post.title %> - <strong><%= post.author.toUpperCase() %></strong></li>
+<%	}); %>
+
+<% include partials/footer %>
