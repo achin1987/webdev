@@ -1,5 +1,4 @@
 const request = require('request');
-const ejs = require('ejs');
 const express = require('express');
 const app = express();
 
