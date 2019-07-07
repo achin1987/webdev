@@ -1,30 +1,34 @@
-var express = require("express");
-var app = express();
-var request = require("request");
+var express    = require("express");
+var app        = express();
 var bodyParser = require("body-parser");
+var mongoose   = require("mongoose");
 
+mongoose.connect("mongodb://localhost:27017/yelp_camp", { useNewUrlParser: true });
 app.set("view engine", "ejs");
-
 app.use(bodyParser.urlencoded({extended:true}));
 
-var campgrounds = [
-    {name: "Salmon creek", image: "https://pixabay.com/get/57e2d54b4852ad14f6da8c7dda793f7f1636dfe2564c704c732d79d09544c35a_340.jpg"},
-    {name: "Granite hill", image: "https://pixabay.com/get/57e1d14a4e52ae14f6da8c7dda793f7f1636dfe2564c704c732d79d09544c35a_340.jpg"},
-    {name: "mountain goats", image: "https://pixabay.com/get/54e6d0434957a514f6da8c7dda793f7f1636dfe2564c704c732d79d09544c35a_340.jpg"},
-    {name: "Salmon creek", image: "https://pixabay.com/get/57e2d54b4852ad14f6da8c7dda793f7f1636dfe2564c704c732d79d09544c35a_340.jpg"},
-    {name: "Granite hill", image: "https://pixabay.com/get/57e1d14a4e52ae14f6da8c7dda793f7f1636dfe2564c704c732d79d09544c35a_340.jpg"},
-    {name: "mountain goats", image: "https://pixabay.com/get/54e6d0434957a514f6da8c7dda793f7f1636dfe2564c704c732d79d09544c35a_340.jpg"},
-    {name: "Salmon creek", image: "https://pixabay.com/get/57e2d54b4852ad14f6da8c7dda793f7f1636dfe2564c704c732d79d09544c35a_340.jpg"},
-    {name: "Granite hill", image: "https://pixabay.com/get/57e1d14a4e52ae14f6da8c7dda793f7f1636dfe2564c704c732d79d09544c35a_340.jpg"},
-    {name: "mountain goats", image: "https://pixabay.com/get/54e6d0434957a514f6da8c7dda793f7f1636dfe2564c704c732d79d09544c35a_340.jpg"}
-];
+//SCHEMA SETUP
+var campgroundSchema = new mongoose.Schema({
+    name: String,
+    image: String
+});
+
+var Campground = mongoose.model("Campground", campgroundSchema);
+
 
 app.get("/", (req, res) =>{
     res.render("landingPage");
 });
 
 app.get("/campgrounds", (req, res) =>{
-    res.render("campgrounds", {campgrounds: campgrounds});
+    //Get ALL CAMPGROUNDS FROM DB
+    Campground.find({}, (err, allCampgrounds)=>{
+        if(err){
+            console.log(err);
+        } else{
+            res.render("Campgrounds", {campgrounds: allCampgrounds});
+        }
+    });
 });
 
 app.get("/campgrounds/new", (req, res) =>{
@@ -36,9 +40,16 @@ app.post("/campgrounds", (req, res) =>{
     var name = req.body.name;
     var image = req.body.image;
     var newCampground = {name: name, image: image};
-    campgrounds.push(newCampground);
-    //redirect back to campgrounds page
-    res.redirect("/campgrounds");
+    //Create a new campgrounds ans save to DB
+    Campground.create(newCampground, (err, newCreate)=>{
+        if(err){
+            console.log(err);
+        }else {
+            //redirect back to campgrounds page
+            res.redirect("/campgrounds");
+        }
+    });
+    
 });
 
 const port = 3000 || process.env.PORT;
