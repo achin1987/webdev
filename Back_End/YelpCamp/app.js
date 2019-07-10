@@ -16,22 +16,6 @@ var campgroundSchema = new mongoose.Schema({
 
 var Campground = mongoose.model("Campground", campgroundSchema);
 
-// Campground.create(
-//     {
-//         name: "Granite hill",
-//         image: "https://pixabay.com/get/57e2d54b4852ad14f6da8c7dda793f7f1636dfe2564c704c732d7ed5944dc658_340.jpg",
-//         description: "This is a huge granite hill, no bathrooms. No water. Beautiful granite!!"
-//     },
-//     (err, campground) =>{
-//         if(err){
-//             console.log(err);
-//         } else{
-//             console.log("NEWLY CREATED CAMPGROUND: ");
-//             console.log(campground);
-//         }
-//     }
-//     );
-
 app.get("/", (req, res) =>{
     res.render("landingPage");
 });
@@ -45,7 +29,6 @@ app.get("/campgrounds", (req, res) =>{
             res.render("index", {campgrounds: allCampgrounds});
         }
     });
-});
 
 //NEW ROUTE - show form to create new campground
 app.get("/campgrounds/new", (req, res) =>{
