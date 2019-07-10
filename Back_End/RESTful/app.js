@@ -61,7 +61,16 @@ app.post("/blogs", (req, res) =>{
 });
 
 //SHOW ROUTE
-
+app.get("/blogs/:id", (req, res) =>{
+    // find the blog with provided id
+    Blog.findById(req.params.id, (err, foundBlog) =>{
+        if(err){
+            res.redirect("/blogs");
+        } else{
+            res.render("show", {blog: foundBlog});
+        }
+    });
+});
 
 app.listen(3000, () =>{
     console.log("Server connected");
