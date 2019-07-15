@@ -1,9 +1,9 @@
 var express      = require("express"),
 expressSanitizer = require("express-sanitizer"),
-methodOverride = require("method-override"),
-app          = express(),
-bodyParser   = require("body-parser"),
-mongoose     = require("mongoose");
+methodOverride   = require("method-override"),
+app              = express(),
+bodyParser       = require("body-parser"),
+mongoose         = require("mongoose");
 
 //APP CONFIG
 mongoose.connect("mongodb://localhost:27017/restful_blog_app", {useNewUrlParser: true});
