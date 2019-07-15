@@ -3,11 +3,11 @@ expressSanitizer = require("express-sanitizer"),
 methodOverride = require("method-override"),
 app          = express(),
 bodyParser   = require("body-parser"),
-ejs          = require("ejs"),
 mongoose     = require("mongoose");
 
 //APP CONFIG
 mongoose.connect("mongodb://localhost:27017/restful_blog_app", {useNewUrlParser: true});
+mongoose.set('useFindAndModify', false);
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static("public")); //to serve the custom stylesheet
 app.set("view engine", "ejs");
@@ -48,6 +48,7 @@ app.get("/blogs/new", (req, res) =>{
 //CREATE ROUTE
 app.post("/blogs", (req, res) =>{
     //create blog
+    req.body.blog.body = req.sanitize(req.body.blog.body);
     data = req.body.blog;
     Blog.create(data, (err, newBlog) =>{
         if(err){
@@ -86,6 +87,7 @@ app.get("/blogs/:id/edit", (req, res) =>{
 
 //UPDATE ROUTE
 app.put("/blogs/:id", (req, res) =>{
+    req.body.blog.body = req.sanitize(req.body.blog.body);
     Blog.findByIdAndUpdate(req.params.id, req.body.blog, (err, updatedBlog) =>{
         if(err){
             res.redirect("/blogs");
