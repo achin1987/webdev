@@ -2,10 +2,14 @@ var express    = require("express");
 var app        = express();
 var bodyParser = require("body-parser");
 var mongoose   = require("mongoose");
+var methodOverride   = require("method-override");
 
+//APP CONFIG
 mongoose.connect("mongodb://localhost:27017/yelp_camp", { useNewUrlParser: true });
+mongoose.set('useFindAndModify', false);
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended:true}));
+app.use(methodOverride("_method"));
 
 //SCHEMA SETUP
 var campgroundSchema = new mongoose.Schema({
@@ -16,19 +20,21 @@ var campgroundSchema = new mongoose.Schema({
 
 var Campground = mongoose.model("Campground", campgroundSchema);
 
+//INDEX ROUTE - show all campgrounds
 app.get("/", (req, res) =>{
     res.render("landingPage");
 });
 
-//INDEX ROUTE - show all campgrounds
 app.get("/campgrounds", (req, res) =>{
     //Get ALL CAMPGROUNDS FROM DB
+    Campground.find({}, function(err, allCampgrounds){
         if(err){
             console.log(err);
         } else{
             res.render("index", {campgrounds: allCampgrounds});
         }
     });
+});
 
 //NEW ROUTE - show form to create new campground
 app.get("/campgrounds/new", (req, res) =>{
