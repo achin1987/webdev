@@ -4,8 +4,9 @@ var bodyParser      = require("body-parser");
 var mongoose        = require("mongoose");
 var methodOverride  = require("method-override");
 var Campground      = require("./models/campgrounds");
-var Comment         = require("./models/comment");
-var userLogin       = require("./models/userLogin");
+var seedDB           =require("./seeds");
+
+seedDB();
 
 //APP CONFIG
 mongoose.connect("mongodb://localhost:27017/yelp_camp", { useNewUrlParser: true });
@@ -38,10 +39,11 @@ app.get("/campgrounds/new", (req, res) =>{
 //SHOW ROUTE - show the details about each campground
 app.get("/campgrounds/:id", (req, res) => {
     //find the campground with provided ID
-    Campground.findById(req.params.id, (err, foundCampground) =>{
+    Campground.findById(req.params.id).populate("comments").exec((err, foundCampground) =>{
         if(err){
             console.log(err);
         } else{
+            console.log(foundCampground);
             //render show template with that campground
             res.render("show", {campground: foundCampground});
         }
