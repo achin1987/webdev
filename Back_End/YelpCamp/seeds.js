@@ -21,12 +21,6 @@ var data = [
 ]
 
 function seedDB(){
-    Comment.deleteMany({}, (err) =>{
-        if(err){
-            console.log(err);
-        }
-        console.log("removed comments!");
-    });
     // Remove all campgrounds
     Campground.deleteMany({}, (err) =>{
         if(err){
@@ -59,6 +53,6 @@ function seedDB(){
             }
         });
     });
-    
 }
+
 module.exports = seedDB;
