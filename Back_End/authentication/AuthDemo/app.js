@@ -2,7 +2,7 @@ var express                 = require("express");
 var bodyParser              = require("body-parser");
 var mongoose                = require("mongoose");
 var passport                = require("passport");
-var passportLocal           = require("passport-local");
+var LocalStrategy           = require("passport-local");
 var expressSession          = require("express-session");
 var User                    = require("./models/user");
 var passportLocalMongoose   = require("passport-local-mongoose");
@@ -23,6 +23,7 @@ app.use(expressSession({
 }));
 
 //these methods read the session and takes data from the session and encode/un-encode it
+passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
@@ -45,7 +46,6 @@ app.get("/register", (req, res) =>{
 
 //handling user sign up
 app.post("/register", (req, res) =>{
-    
     User.register(new User({username: req.body.username}), req.body.password, (err, user) =>{
         if(err){
             console.log(err);
@@ -56,6 +56,20 @@ app.post("/register", (req, res) =>{
             });
         }
     });
+});
+
+//LOGIN ROUTES
+//render login form
+app.get("/login", (req, res) =>{
+    res.render("login");
+});
+
+//login route
+//milldeware: code that runs before the final call back function
+app.post("/login", passport.authenticate("local", {
+    successRedirect: "/secret",
+    failureRedirect: "/login"
+}), (req, res) =>{
 });
 
 app.listen(3000, () =>{
