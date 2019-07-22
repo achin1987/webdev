@@ -13,14 +13,14 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 mongoose.connect("mongodb://localhost:27017/AuthDemo", {useNewUrlParser: true});
 mongoose.set("useFindAndModify", false);
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use(expressSession({
     secret: "What is your pet name",
     resave: false, 
     saveUninitialized: false
 }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 //these methods read the session and takes data from the session and encode/un-encode it
 passport.use(new LocalStrategy(User.authenticate()));
@@ -32,11 +32,10 @@ app.get("/", (req, res) =>{
     res.render("home");
 });
 
-
-
-app.get("/secret", (req, res) =>{
+app.get("/secret", isLoggedIn, (req, res) =>{
     res.render("secret");
 });
+
 
 //AUTH ROUTES
 //SHOW SIGN UP FORM
@@ -50,11 +49,10 @@ app.post("/register", (req, res) =>{
         if(err){
             console.log(err);
             return res.render("register");
-        } else{
-            passport.authenticate("local")(req, res, () => {
-                res.redirect("/secret");
-            });
         }
+        passport.authenticate("local")(req, res, () => {
+            res.redirect("/secret");
+        });
     });
 });
 
@@ -71,6 +69,18 @@ app.post("/login", passport.authenticate("local", {
     failureRedirect: "/login"
 }), (req, res) =>{
 });
+
+app.get("/logout", (req, res) =>{
+    req.logOut();
+    res.redirect("/");
+});
+
+function isLoggedIn(req, res, next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    res.redirect("/login");
+}
 
 app.listen(3000, () =>{
     console.log("server connected");
