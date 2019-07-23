@@ -6,6 +6,9 @@ var methodOverride  = require("method-override");
 var Campground      = require("./models/campgrounds");
 var Comment         = require("./models/comment");
 var seedDB          = require("./seeds");
+var passport        = require("passport");
+var LocalStrategy   = require("passport-local");
+var User            = require("./models/user");
 
 seedDB();
 
