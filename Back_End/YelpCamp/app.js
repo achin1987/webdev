@@ -34,6 +34,13 @@ app.use(methodOverride("_method"));
 app.use(express.static(__dirname + "/public")); //__dirname is the directory that the script is running
 seedDB();
 
+//own middleware
+app.use((req, res, next) =>{
+    res.locals.currentUser = req.user;
+    next();
+});
+
+
 //INDEX ROUTE - show all campgrounds
 app.get("/", (req, res) =>{
     res.render("landingPage");
