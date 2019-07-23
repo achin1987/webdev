@@ -147,6 +147,19 @@ app.post("/register", (req, res) =>{
     });
 });
 
+//LOGIN ROUTE
+//login form
+app.get("/login", (req, res) =>{
+    res.render("login");
+});
+
+//handling login
+app.post("/login", passport.authenticate("local", {
+    successRedirect: "/campgrounds",
+    failureRedirect: "/login"
+}), (req, res) =>{
+});
+
 const port = 3000 || process.env.PORT;
 app.listen(port, () =>{
     console.log("Server connected");
