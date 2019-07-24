@@ -34,7 +34,8 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(methodOverride("_method"));
 app.use(express.static(__dirname + "/public")); //__dirname is the directory that the script is running
-seedDB();
+
+//seedDB();   //seed the DB
 
 //own middleware
 app.use((req, res, next) =>{
