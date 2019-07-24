@@ -60,6 +60,33 @@ router.post("/", isLoggedIn, (req, res) =>{
     });
 });
 
+//EDIT ROUTE - edit a campground
+router.get("/:id/edit", (req, res) =>{
+    Campground.findById(req.params.id, (err, foundCampground) =>{
+        if(err){
+            console.log(err);
+            res.redirect("/campgrounds");
+        } else{
+            res.render("campgrounds/edit", {campground: foundCampground});
+        }
+    });
+    
+});
+//UPDATE ROUTE - update the edited campground
+router.put("/:id", (req, res) =>{
+    //find and update the correct campground
+    Campground.findByIdAndUpdate(req.params.id, req.body.campground, (err, updatedCampground) =>{
+        if(err){
+            res.redirect("/campgrounds");
+        } else{
+            //redirect to showpage
+            res.redirect("/campgrounds/" + req.params.id);
+        }
+    });
+    
+});
+
+//middleware
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
         return next();
