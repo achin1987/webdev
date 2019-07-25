@@ -62,20 +62,14 @@ router.post("/", isLoggedIn, (req, res) =>{
 });
 
 //EDIT ROUTE - edit a campground
-router.get("/:id/edit", (req, res) =>{
+router.get("/:id/edit", checkCampgroundOwnership, (req, res) =>{
     Campground.findById(req.params.id, (err, foundCampground) =>{
-        if(err){
-            console.log(err);
-            res.redirect("/campgrounds");
-        } else{
-            res.render("campgrounds/edit", {campground: foundCampground});
-        }
+        res.render("campgrounds/edit", {campground: foundCampground});
     });
-    
 });
 
 //UPDATE ROUTE - update the edited campground
-router.put("/:id", (req, res) =>{
+router.put("/:id", checkCampgroundOwnership, (req, res) =>{
     //find and update the correct campground
     Campground.findByIdAndUpdate(req.params.id, req.body.campground, (err, updatedCampground) =>{
         if(err){
@@ -89,7 +83,7 @@ router.put("/:id", (req, res) =>{
 });
 
 //DESTROY ROUTE - delete a campground
-router.delete("/:id", (req, res) =>{
+router.delete("/:id", checkCampgroundOwnership, (req, res) =>{
     Campground.findById(req.params.id, (err, campground) =>{
         if (err){
             return next(err);
@@ -107,6 +101,27 @@ function isLoggedIn(req, res, next){
         return next();
     }
     res.redirect("/login");
+}
+
+function checkCampgroundOwnership(req, res, next){
+    //is user logged in
+    if(req.isAuthenticated()){
+        Campground.findById(req.params.id, (err, foundCampground) =>{
+            if(err){
+                console.log(err);
+                res.redirect("/campgrounds");
+            } else{
+                //does user own the campground, i.e. does the if not then redirect
+                if(foundCampground.author.id.equals(req.user._id)){
+                    next();
+                } else{
+                    res.redirect("back");
+                }
+            }
+        });
+    } else{
+        res.redirect("back");
+    }
 }
 
 module.exports = router;
