@@ -3,8 +3,8 @@ var router          = express.Router({mergeParams: true});   //mergeParams merge
 var Campground      = require("../models/campgrounds");
 var Comment         = require("../models/comment");
 
-// COMMENTS ROUTES
-//NEW ROUTE - show form to create new comment
+
+// NEW ROUTE - show form to create new comment
 router.get("/new", isLoggedIn, (req, res) =>{
     Campground.findById(req.params.id, (err, campground) =>{
         if(err){
@@ -15,7 +15,7 @@ router.get("/new", isLoggedIn, (req, res) =>{
     });
 });
 
-//CREATE ROUTE - add new comment to DB
+// CREATE ROUTE - add new comment to DB
 router.post("/", isLoggedIn, function(req, res){
     //lookup campground using ID
     Campground.findById(req.params.id, function(err, campground){
@@ -45,7 +45,7 @@ router.post("/", isLoggedIn, function(req, res){
     });
 });
 
-//COMMENT EDIT ROUTE
+// EDIT ROUTE
 router.get("/:comment_id/edit", (req, res) =>{
     Comment.findById(req.params.comment_id, (err, foundComment)=>{
         if(err){
@@ -56,7 +56,7 @@ router.get("/:comment_id/edit", (req, res) =>{
     });
 });
 
-//COMMENT UPDATE ROUTE
+// UPDATE ROUTE
 router.put("/:comment_id", (req, res) =>{
     Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, (err, updatedComment)=>{
         if(err){
@@ -66,6 +66,18 @@ router.put("/:comment_id", (req, res) =>{
         }
     });
 });
+
+// DESTROY ROUTE
+router.delete("/:comment_id", (req, res) =>{
+    Comment.findByIdAndRemove(req.params.comment_id, (err, foundComment) =>{
+        if(err){
+            res.redirect("back");
+        } else{
+            res.redirect("/campgrounds/" + req.params.id);
+        }
+    });
+});
+
 
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
