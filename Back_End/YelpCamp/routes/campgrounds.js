@@ -86,7 +86,7 @@ router.delete("/:id", checkCampgroundOwnership, (req, res) =>{
     Campground.findByIdAndRemove(req.params.id, (err, campground) =>{
         if (err){
             return next(err);
-        } else{
+        } else{ 
             // req.flash("success", "Campground deleted successfully!");
             res.redirect("/campgrounds");
         }   
