@@ -79,7 +79,6 @@ router.put("/:id", checkCampgroundOwnership, (req, res) =>{
             res.redirect("/campgrounds/" + req.params.id);
         }
     });
-    
 });
 
 //DESTROY ROUTE - delete a campground
