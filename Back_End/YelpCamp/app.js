@@ -7,8 +7,9 @@ var seedDB          = require("./seeds");
 var passport        = require("passport");
 var expressSession  = require("express-session");
 var LocalStrategy   = require("passport-local");
-var User            = require("./models/user");
+var flash           = require("connect-flash");
 
+var User                = require("./models/user");
 var commentRoutes       = require("./routes/comments");
 var authRoutes          = require("./routes/auth");
 var campgroundsRoutes   = require("./routes/campgrounds");
@@ -34,12 +35,15 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(methodOverride("_method"));
 app.use(express.static(__dirname + "/public")); //__dirname is the directory that the script is running
+app.use(flash());
 
 //seedDB();   //seed the DB
 
 //own middleware
 app.use((req, res, next) =>{
     res.locals.currentUser = req.user;
+    res.locals.error = req.flash("error");
+    res.locals.success = req.flash("success");
     next();
 });
 

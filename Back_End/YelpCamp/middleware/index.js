@@ -7,6 +7,7 @@ middlewareObj.isLoggedIn = function(req, res, next){
     if(req.isAuthenticated()){
         return next();
     }
+    req.flash("error", "Please Login!");
     res.redirect("/login");
 }
 
@@ -15,6 +16,7 @@ middlewareObj.checkCommentOwnership = function(req, res, next){
     if(req.isAuthenticated()){
         Comment.findById(req.params.comment_id, (err, foundComment) =>{
             if(err){
+                req.flash("error", "Comment not found...");
                 console.log(err);
                 res.redirect("back");
             } else{
@@ -27,6 +29,7 @@ middlewareObj.checkCommentOwnership = function(req, res, next){
             }
         });
     } else{
+        req.flash("error", "You're not authorised for this action...");
         res.redirect("back");
     }
 }
@@ -36,6 +39,7 @@ middlewareObj.checkCampgroundOwnership = function(req, res, next){
     if(req.isAuthenticated()){
         Campground.findById(req.params.id, (err, foundCampground) =>{
             if(err){
+                req.flash("error", "Campground not found...");
                 console.log(err);
                 res.redirect("/campgrounds");
             } else{
@@ -43,6 +47,7 @@ middlewareObj.checkCampgroundOwnership = function(req, res, next){
                 if(foundCampground.author.id.equals(req.user._id)){
                     next();
                 } else{
+                    req.flash("error", "You're not authorised for this action...");
                     res.redirect("back");
                 }
             }
