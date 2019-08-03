@@ -1,11 +1,18 @@
 <% include ./partials/header %>
-
-<h1>Sign up!</h1>
-
-<form action="/register" method="POST">
-    <input type="text" placeholder="username" name="username">
-    <input type="password" placeholder="password" name="password">
-    <button>Sign Up</button>
-</form>
+<div class="row">
+        <div class="col-md-12">
+            <form class="form-signin" action="/register" method="POST">
+                <h1 class="h3 mb-3 font-weight-normal">Sign Up!</h1>
+                <label for="inputUsername" class="sr-only">Username</label>
+                <input type="text" placeholder="username" name="username" id="inputUsername" class="form-control" required autofocus>
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" placeholder="password" name="password" id="inputPassword" class="form-control" required>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
+            </form>
+            <div class="form-signin">
+                <a href="/campgrounds">Go back</a>
+            </div>
+        </div>
+    </div>
 
 <% include ./partials/footer %>
