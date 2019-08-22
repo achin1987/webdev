@@ -4,13 +4,13 @@ var Campground      = require("../models/campgrounds");
 var middleware      = require("../middleware"); // as the file name is index.js
 var NodeGeocoder    = require('node-geocoder');
  
+
 var options = {
   provider: 'google',
-  httpAdapter: 'https',
+  httpAdapter: 'http',
   apiKey: process.env.GEOCODER_API_KEY,
   formatter: null
 };
- 
 var geocoder = NodeGeocoder(options);
 
 
@@ -59,6 +59,7 @@ router.post("/", middleware.isLoggedIn, function(req, res){
     }
     geocoder.geocode(req.body.location, function (err, data) {
       if (err || !data.length) {
+        console.log(err);
         req.flash('error', 'Invalid address');
         return res.redirect('back');
       }

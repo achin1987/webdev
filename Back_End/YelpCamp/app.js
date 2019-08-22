@@ -54,5 +54,5 @@ app.use("/campgrounds/:id/comments", commentRoutes);
 
 const port = 3000 || process.env.PORT;
 app.listen(port, () =>{
-    console.log("Server connected");
+    console.log('Server is listening');
 });
